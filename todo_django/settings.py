@@ -27,7 +27,7 @@ SECRET_KEY = 'qg-eav2(k#de8p1z6%&!lzrn8inf3z@m@6btk=*4ocgckpsbkd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
