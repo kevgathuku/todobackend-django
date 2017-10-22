@@ -5,3 +5,6 @@ class Todo(models.Model):
     title = models.CharField(max_length=256)
     completed = models.BooleanField(default=False)
     url = models.URLField(blank=True, default='')
+
+    def __str__(self):
+        return self.title
