@@ -1,13 +1,14 @@
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework.parsers import JSONParser
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from .models import Todo
 from .serializers import TodoSerializer
 
 
-@csrf_exempt
+@api_view(['GET', 'POST', 'DELETE'])
 def index(request):
     """
     List all todos, or create a new todo.
@@ -15,15 +16,14 @@ def index(request):
     if request.method == 'GET':
         todos = Todo.objects.all()
         serializer = TodoSerializer(todos, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
 
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = TodoSerializer(data=data)
+        serializer = TodoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         Todo.objects.all().delete()
-        return JsonResponse([], safe=False)
+        return Response([])

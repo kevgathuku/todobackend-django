@@ -7,4 +7,4 @@ class Todo(models.Model):
     url = models.URLField(blank=True, default='')
 
     def __str__(self):
-        return self.title
+        return "Title: {} Status: {}".format(self.title, self.completed)
