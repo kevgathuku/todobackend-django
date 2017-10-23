@@ -31,7 +31,7 @@ def index(request):
         return Response([])
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 def todo_detail(request, todo_id):
     """
     Retrieve, update or delete a todo item.
@@ -45,7 +45,7 @@ def todo_detail(request, todo_id):
         serializer = TodoSerializer(todo)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
+    elif request.method == 'PUT' or request.method == 'PATCH':
         serializer = TodoSerializer(todo, data=request.data)
         if serializer.is_valid():
             serializer.save()
