@@ -21,7 +21,9 @@ def index(request):
     elif request.method == 'POST':
         serializer = TodoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            created_todo = serializer.save()
+            created_todo.url = request.build_absolute_uri(created_todo.get_absolute_url())
+            created_todo.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
